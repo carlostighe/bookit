@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask import render_template, url_for, request
+from flask import render_template, url_for, request, redirect
 from bookit import bookit as app
 from models import User
 
@@ -26,6 +26,8 @@ def add():
         url = request.form['url']
         store_bookmarks(url)
         app.logger.debug('stored url: ' + url)
+        app.logger.debug(request.headers)
+        return redirect(url_for('index'))
     return render_template('add.html')
 
 @app.errorhandler(404)
