@@ -14,10 +14,21 @@
     <!-- Example row of columns -->
     <div class="row">
         <div class="col-lg-4">
-          <h2>Safari bug warning!</h2>
-          <p class="text-danger">As of v8.0, Safari exhibits a bug in which resizing your browser horizontally causes rendering errors in the justified nav that are cleared upon refreshing.</p>
+          <h2>Recently added:</h2>
+          {% if new_bookmarks %}
+            <ul>
+                {% for bm in new_bookmarks %}
+                <li>
+                    <a href="{{ url_for('user', username=bm.user.username) }}"> {{ bm.user.username }} </a>  added:     <a target="_blank" href="{{ bm.url }}">{{ bm.url }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+                No bookmarks yet. :(
+            {% endif %}
+          <p >As of v8.0, Safari exhibits a bug in which resizing your browser horizontally causes rendering errors in the justified nav that are cleared upon refreshing.</p>
           <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-primary" href="#" role="button">View details &raquo;</a></p>
+          <p><a class="btn btn-primary" href="{{ url_for('add') }}" role="button">Add a bookmark &raquo;</a></p>
       </div>
       <div class="col-lg-4">
           <h2>Heading</h2>

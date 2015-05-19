@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}
+bookit! -- Bookmarks for the user {{ user.username }}
+{% endblock %}
+
+{% block body %}
+	<article>
+		<header>
+			<h1>Bookmarks for {{ user.username }}</h1>
+				{% for bm in user.bookmarks %}
+				<div class="col-xs-3">
+					<a href="{{ bm.url }}">{{ bm.description }} - </a>
+				</div>
+				<div class="col-xs-9">
+					<span class="timestamp">Added @: {{ bm.date }}</span>
+				</div>
+				{% else %}
+					<div class="col-xs-6">This user has not added any bookmarks yet</div>
+				{% endfor %}
+		</header>
+	</article>
+{% endblock %}
