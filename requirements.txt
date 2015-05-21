@@ -12,3 +12,4 @@ tornado==4.1
 Werkzeug==0.10.4
 WTForms==2.0.2
 flask-script
+Flask-Login

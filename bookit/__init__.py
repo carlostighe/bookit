@@ -1,6 +1,7 @@
 import os
 from flask import Flask, url_for
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -14,6 +15,12 @@ db = SQLAlchemy(bookit)
 bookit.jinja_env.globals['static'] = (
     lambda filename: url_for('static', filename = filename)
 )
+
+# Configure authentication
+login_manager = LoginManager()
+login_manager.session_protection = "strong"
+login_manager.login_view = "login"
+login_manager.init_app(bookit)
 
 import models
 import views

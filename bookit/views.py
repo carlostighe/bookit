@@ -1,26 +1,14 @@
 from datetime import datetime
 from flask import render_template, url_for, request, redirect, flash
-from bookit import bookit as app, db
+from flask_login import login_required, login_user, current_user, logout_user
+
+from bookit import bookit as app, db, login_manager
 from models import User, Bookmark
-from forms import BookmarkForm
+from forms import BookmarkForm, LoginForm, SignupForm
 
-def logged_in_user():
-    carlos = User.query.filter_by(username="Carlos").first()
-    if(carlos):
-        return carlos
-    else:
-        user = User(username="Carlos", email="carlos@example.com");
-        db.session.add(user)
-        db.session.commit()
-        return user
-
-def store_bookmarks(url, description):
-    bookmarks.append(dict(
-        url = url,
-        description=description,
-        user = 'Carlos',
-        date = datetime.utcnow()
-        ))
+@login_manager.user_loader
+def load_user(userid):
+    return User.query.get(int(userid))
 
 
 @app.route('/')
@@ -33,12 +21,13 @@ def index():
                            )
 
 @app.route('/add', methods=['GET', 'POST'])
+@login_required
 def add():
     form = BookmarkForm()
     if form.validate_on_submit():
         url = form.url.data
         description = form.description.data
-        bm = Bookmark(user=logged_in_user(), url=url, description=description)
+        bm = Bookmark(user=current_user, url=url, description=description)
         db.session.add(bm)
         db.session.commit()
         #app.logger.debug('stored url: ' + url)
@@ -52,6 +41,38 @@ def add():
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     return render_template('user.html', user=user)
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit:
+        #login and validate user
+        user = User.get_by_username(username=form.username.data)
+        if user is not None and user.check_password(form.password.data):
+            login_user(user, form.remember_me.data)
+            flash('Logged in successfully as {}.'.format(user.username))
+            return redirect(request.args.get('next') or url_for('user', username=user.username))
+        flash('Incorrect username or password.')
+    return render_template('login.html', form=form)
+
+@app.route('/logout', methods=['GET', 'POST'])
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
+
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    form = SignupForm()
+    if form.validate_on_submit():
+        user = User(email=form.email.data,
+                    username=form.username.data,
+                    password=form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        flash('Welcome, {}! Please login.'.format(user.username))
+        return redirect(url_for('login'))
+    return render_template("signup.html", form=form)
 
 @app.errorhandler(404)
 def page_not_found(e):
