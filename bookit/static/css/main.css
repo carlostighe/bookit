@@ -1,0 +1,7 @@
+.error {
+    border: red 1px;
+}
+
+a:-webkit-any-link {
+    text-decoration: none;
+}
