@@ -1,0 +1,28 @@
+<a class="list-group-item" target="_blank" href=" {{ bookmark.url }}">
+    <h4 class="list-group-item-heading">
+        {{ bookmark.description|truncate(50, killwords=False) }}
+    </h4>
+    <span class="url">
+        {{ bookmark.url|truncate(50, killwords=False) }}
+    </span>
+</a>
+{% if bookmark.tags %}
+    <p class="list-group-item">
+        Tags:
+        {% for tag in bookmark._tags %}
+        <a href=" {{ url_for('bookmarks.tag', name=tag) }} ">{{ tag }},</a>
+        {% endfor %}
+    </p>
+{% endif %}
+<p class="list-group-item">
+<a  href="{{ url_for('bookmarks.user', username=bookmark.user.username )}}">
+    Added by {{ bookmark.user.username }} - {{ moment(bookmark.date).fromNow() }}
+</a>
+
+    {% if current_user == bookmark.user %}
+    <a class="btn btn-default" href=" {{ url_for('bookmarks.edit_bookmark', bookmark_id=bookmark.id )}} ">Edit</a>
+    <a class="btn btn-danger" href=" {{ url_for('bookmarks.delete_bookmark', bookmark_id=bookmark.id )}} ">Delete</a>
+{% endif %}
+</p></p>
+
+

@@ -11,10 +11,12 @@
     <meta name="viewport" content="width=device-width">
 
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    {% block styles %}
+        <link rel="stylesheet" href="{{ static('css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ static('css/justified-nav.css') }}">
+        <link rel="stylesheet" href="{{ static('css/main.css') }}">
+    {% endblock %}
 
-    <link rel="stylesheet" href="{{ static('css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ static('css/justified-nav.css') }}">
-    <link rel="stylesheet" href="{{ static('css/main.css') }}">
 </head>
 <body>
     <!--[if lt IE 7]>
@@ -25,20 +27,15 @@
             <h3 class="text-muted">bookit!</h3>
             <nav>
               <ul class="nav nav-justified">
-                <li class="active"><a href=" {{ url_for('index') }} ">Home</a></li>
+                <li class="active"><a href=" {{ url_for('main.index') }} ">Home</a></li>
                 {% if current_user.is_authenticated() %}
-                    <li><a href="{{  url_for('user', username=current_user.username) }}">Bookmarks</a></li>
-                    <li><a href=" {{ url_for('add') }} ">Add</a></li>
-                    <li><a href=" {{ url_for('logout') }}">Logout</a></li>
+                    <li><a href="{{  url_for('bookmarks.user', username=current_user.username) }}">Bookmarks</a></li>
+                    <li><a href=" {{ url_for('bookmarks.add') }} ">Add</a></li>
+                    <li><a href=" {{ url_for('auth.logout') }}">Logout</a></li>
                 {% else %}
-                    <li><a href=" {{ url_for('signup') }} ">Sign Up</a></li>
-                    <li><a href=" {{ url_for('login') }} ">Login</a></li>
+                    <li><a href=" {{ url_for('auth.signup') }} ">Sign Up</a></li>
+                    <li><a href=" {{ url_for('auth.login') }} ">Login</a></li>
                 {% endif %}
-
-
-
-
-
               </ul>
             </nav>
           </div>
@@ -54,10 +51,23 @@
             {% endwith %}
         </article>
 
+
+
     {% block body %}
     {% endblock %}
+    {% block secondary_content %}
+        <div class="row">
+            <h2>Tags</h2>
+            {% for tag in all_tags() %}
+                <a href=" {{ url_for('bookmarks.tag', name=tag) }} ">{{ tag }}</a>
+            {% endfor %}
+        </div>
+    {% endblock %}
+
     </div>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    {% block scripts %}
+    {{ moment.include_jquery() }}
+    {{ moment.include_moment() }}
     <script>window.jQuery || document.write('<script src="{{ static('js/vendors/jquery-1.8.3.min.js') }}"><\/script>')</script>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
@@ -82,6 +92,8 @@
     <script src="{{ static('js/vendors/bootstrap/bootstrap-scrollspy.js') }}"></script>
     <script src="{{ static('js/vendors/bootstrap/bootstrap-collapse.js') }}"></script>
     <script src="{{ static('js/vendors/bootstrap/bootstrap-tab.js') }}"></script>
+    {% endblock %}
+
     <!-- endbuild -->
 </body>
 </html>

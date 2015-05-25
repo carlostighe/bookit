@@ -8,38 +8,18 @@
     <div class="jumbotron">
         <h1> {{ title }} </h1>
         <p class="lead"> {{ headline }} </p>
-        <p><a class="btn btn-lg btn-success" href="#" role="button">Get started today</a></p>
+        <p><a class="btn btn-lg btn-success" href="{{ url_for('auth.signup') }}" role="button">Get started today</a></p>
     </div>
 
     <!-- Example row of columns -->
     <div class="row">
-        <div class="col-lg-4">
-          <h2>Recently added:</h2>
-          {% if new_bookmarks %}
-            <ul>
-                {% for bm in new_bookmarks %}
-                <li>
-                    <a href="{{ url_for('user', username=bm.user.username) }}"> {{ bm.user.username }} </a>  added:     <a target="_blank" href="{{ bm.url }}">{{ bm.description }}  - {{ bm.url }}</a>
-                </li>
-                {% endfor %}
-            </ul>
-            {% else %}
-                No bookmarks yet. :(
-            {% endif %}
-          <p >As of v8.0, Safari exhibits a bug in which resizing your browser horizontally causes rendering errors in the justified nav that are cleared upon refreshing.</p>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-primary" href="{{ url_for('add') }}" role="button">Add a bookmark &raquo;</a></p>
-      </div>
-      <div class="col-lg-4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-primary" href="#" role="button">View details &raquo;</a></p>
-      </div>
-      <div class="col-lg-4">
-          <h2>Heading</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa.</p>
-          <p><a class="btn btn-primary" href="#" role="button">View details &raquo;</a></p>
-      </div>
+        <h2>Recently added:</h2>
+        {% if new_bookmarks.count() > 0 %}
+            {% with bookmarks=new_bookmarks %}
+                {% include "bookmark_list.html" %}
+            {% endwith %}
+        {% else %}
+            No Bookmarks have been added yet.
+        {% endif %}
     </div>
-
 {% endblock %}
