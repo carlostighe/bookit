@@ -21,7 +21,7 @@ def add():
         #bookmark.logger.debug('stored url: ' + url)
         #bookmark.logger.debug(request.headers)
         flash("Stored bookmark '{}'".format(description))
-        return redirect(url_for('.index'))
+        return redirect(url_for('main.index'))
 
     return render_template('bookmark_form.html', form=form)
 
@@ -38,7 +38,7 @@ def edit_bookmark(bookmark_id):
         #bookmark is already part of the session when defined above
         db.session.commit()
         flash("Stored '{}'".format(bookmark.description))
-        return redirect(url_for('.user', username=current_user.username))
+        return redirect(url_for('bookmarks.user', username=current_user.username))
     return render_template('bookmark_form.html', form=form, title='Edit Bookmark')
 
 @bookmarks.route('/delete/<int:bookmark_id>', methods=['GET', 'POST'])
@@ -51,7 +51,7 @@ def delete_bookmark(bookmark_id):
         db.session.delete(bookmark)
         db.session.commit()
         flash("Deleted '{}'".format(bookmark.description))
-        return redirect(url_for('.user', username=current_user.username))
+        return redirect(url_for('bookmarks.user', username=current_user.username))
     else:
         flash("Please confirm deleting the bookmark")
     return render_template('confirm_delete.html', bookmark=bookmark, nolinks=True)

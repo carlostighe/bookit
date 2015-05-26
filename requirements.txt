@@ -16,3 +16,5 @@ Flask-Login
 flask-moment
 flask-migrate
 flask-debugtoolbar
+flask-testing
+nose
