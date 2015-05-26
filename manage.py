@@ -1,13 +1,19 @@
-from bookit import bookit as app, db
-from bookit.models import User, Bookmark, Tag
+#! /usr/bin/env python
 
-from flask.ext.script import Manager, prompt_bool
+import os
+
+from bookit import create_app, db
+
+from flask.ext.script import Manager
 from flask.ext.migrate import Migrate, MigrateCommand
 
+app = create_app(os.getenv('BOOKIT_ENV') or 'dev')
 manager = Manager(app)
+
 migrate = Migrate(app, db)
 
 manager.add_command('db', MigrateCommand)
+
 
 @manager.command
 #@manager.command makes commands available on command line
