@@ -9,7 +9,7 @@ livereload==2.3.2
 MarkupSafe==0.23
 SQLAlchemy==1.1.0
 tornado==4.1
-Werkzeug==0.10.4
+Werkzeug==0.15.3
 WTForms==2.0.2
 flask-script
 Flask-Login
