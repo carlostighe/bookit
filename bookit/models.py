@@ -18,10 +18,12 @@ class Bookmark(db.Model):
     date = db.Column(db.DateTime, default=datetime.utcnow)
     description = db.Column(db.String(300))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    _tags = db.relationship('Tag', secondary=tags, lazy='joined', backref=db.backref('bookmarks', lazy='dynamic'))
+    _tags = db.relationship('Tag', secondary=tags, lazy='joined', 
+        backref=db.backref('bookmarks', lazy='dynamic'))
 
     @staticmethod
-    #static because we dont need Bookmark object to be able to call it
+    # static because we dont need Bookmark object to be able to call it
+    # Part of the class because it operates on the data
     def newest(num):
         return Bookmark.query.order_by(desc(Bookmark.date)).limit(num)
 

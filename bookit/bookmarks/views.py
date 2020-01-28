@@ -63,8 +63,8 @@ def user(username):
     return render_template('user.html', user=user)
 
 
-
 @bookmarks.route('/tag/<name>')
 def tag(name):
     tag = Tag.query.filter_by(name=name).first_or_404()
     return render_template('tag.html', tag=tag)
+    

@@ -1,3 +1,5 @@
+# all app set up in this file
+
 from flask import Flask, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager

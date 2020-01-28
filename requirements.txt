@@ -7,7 +7,7 @@ itsdangerous==0.24
 Jinja2==2.7.3
 livereload==2.3.2
 MarkupSafe==0.23
-SQLAlchemy==1.0.4
+SQLAlchemy==1.1.0
 tornado==4.1
 Werkzeug==0.10.4
 WTForms==2.0.2

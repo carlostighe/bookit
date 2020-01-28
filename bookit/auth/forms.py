@@ -13,17 +13,17 @@ class LoginForm(Form):
 
 class SignupForm(Form):
     username = StringField('Username',
-                                validators=[
-                                    DataRequired(), Length(3,80),
-                                    Regexp('^[A-Za-z0-9_]{3,}$',
-                                    message='Username consists of numbers, letters, and underscores.')
-                                ])
+                            validators=[
+                                DataRequired(), Length(3,80),
+                                Regexp('^[A-Za-z0-9_]{3,}$',
+                                message='Username consists of numbers, letters, and underscores.')
+                            ])
     password = PasswordField('Password',
-                                validators=[
-                                    DataRequired(),
-                                    EqualTo('password2',
-                                    message='Passwords must match')
-                                ])
+                            validators=[
+                                DataRequired(),
+                                EqualTo('password2',
+                                message='Passwords must match')
+                            ])
     password2 = PasswordField('Confirm Password', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Length(1, 120), Email()])
 
